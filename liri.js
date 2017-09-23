@@ -85,7 +85,7 @@ function doSpotify(searchTerm) {
 }
 
 // node liri.js movie-this '<movie name here>'
-if (liriCommand === "movie-this") {
+function doMovie() {
     // This will output the following information to your terminal/bash window:
     //   * Title of the movie.
     //   * Year the movie came out.
@@ -97,7 +97,7 @@ if (liriCommand === "movie-this") {
     //   * Actors in the movie.
     // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
     // The OMDB API requires an API key. You may use 40e9cece.
-
+console.log("doMovie function request");
 }
 
 
@@ -124,6 +124,9 @@ function whichToDo(liriCommand) {
     }
     if (liriCommand === "spotify-this-song") {
         doSpotify(searchTerm);
+    }
+    if (liriCommand === "movie-this") {
+        doMovie();
     }
     if (liriCommand === "do-what-it-says") {
         doWhat();
