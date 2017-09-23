@@ -97,7 +97,31 @@ function doMovie() {
     //   * Actors in the movie.
     // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
     // The OMDB API requires an API key. You may use 40e9cece.
-console.log("doMovie function request");
+    var request = require("request");
+    if (searchTerm == "") {
+        var movieSearch = "Mr.+Nobody";
+    } else {
+        var movieSearch = '"' + searchTerm + '"';
+    }
+    var queryUrl = "http://www.omdbapi.com/?t=" + movieSearch + "&y=&plot=short&apikey=40e9cece";
+    request(queryUrl, function (error, response, body) {
+
+        if (error) {
+            throw error;
+        }
+
+        if (response.statusCode === 200) {
+            console.log("Title:", JSON.parse(body).Title);
+            console.log("Released:", JSON.parse(body).Year);
+            console.log("IMDB Rating:", JSON.parse(body).imdbRating);
+            console.log("Rotten Tomatoes Rating:", JSON.parse(body).Ratings[1].Value);
+            console.log("Country produced:", JSON.parse(body).Country);
+            console.log("Language:", JSON.parse(body).Language);
+            console.log("Plot:", JSON.parse(body).Plot);
+            console.log("Actors:", JSON.parse(body).Actors);
+        }
+
+    });
 }
 
 
@@ -114,7 +138,7 @@ function doWhat() {
         var dataArr = data.split(",");
         liriCommand = dataArr[0];
         searchTerm = dataArr[1];
-        whichToDo(liriCommand,searchTerm);
+        whichToDo(liriCommand, searchTerm);
     });
 }
 
