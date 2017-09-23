@@ -12,7 +12,7 @@ if (process.argv.length > 3) {
 
 // node liri.js my-tweets
 // This will show your last 20 tweets and when they were created at in your terminal/bash window.
-if (liriCommand === "my-tweets") {
+function doTwitter() {
     var Twitter = require('twitter');
     var keys = require("./keys.js");
     var client = new Twitter(keys);
@@ -32,7 +32,7 @@ if (liriCommand === "my-tweets") {
 }
 
 // node liri.js spotify-this-song '<song name here>'
-if (liriCommand === "spotify-this-song") {
+function doSpotify(searchTerm) {
     // This will show the following information about the song in your terminal/bash window
     // Artist(s)
     // The song's name
@@ -44,7 +44,7 @@ if (liriCommand === "spotify-this-song") {
     if (searchTerm == "") {
         var songSearch = "The Sign artist:Ace of Base";
     } else {
-        var songSearch = '"'+searchTerm+'"';
+        var songSearch = '"' + searchTerm + '"';
     }
 
     var SpotifyWebApi = require('spotify-web-api-node');
@@ -64,15 +64,17 @@ if (liriCommand === "spotify-this-song") {
             spotifyApi.setAccessToken(data.body['access_token']);
 
             // search tracks with song name in title
-            spotifyApi.searchTracks('track:' + songSearch, { limit: 1 })
+            spotifyApi.searchTracks('track:' + songSearch, {
+                limit: 1
+            })
                 .then(function (response) {
                     // var songInfo = response.body.tracks.items;
                     var songInfo = response.body.tracks.items[0];
                     // console.log(songInfo);
-                    console.log("Artist:",songInfo.album.artists[0].name);
-                    console.log("Song:",songInfo.name);
-                    console.log("Preview link:",songInfo.preview_url);
-                    console.log("Album:",songInfo.album.name);
+                    console.log("Artist:", songInfo.album.artists[0].name);
+                    console.log("Song:", songInfo.name);
+                    console.log("Preview link:", songInfo.preview_url);
+                    console.log("Album:", songInfo.album.name);
                 }, function (err) {
                     console.log('Something went wrong!', err);
                 });
@@ -100,15 +102,35 @@ if (liriCommand === "movie-this") {
 
 
 // node liri.js do-what-it-says
-if (liriCommand === "do-what-it-says") {
+function doWhat() {
     // Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
     // It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
     // Feel free to change the text in that document to test out the feature for other commands.
 
-    var doIt = require("./random.txt");
-    console.log("doIt", doIt);
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            throw error;
+        }
+        var dataArr = data.split(",");
+        liriCommand = dataArr[0];
+        searchTerm = dataArr[1];
+        whichToDo(liriCommand,searchTerm);
+    });
 }
 
+function whichToDo(liriCommand) {
+    if (liriCommand === "my-tweets") {
+        doTwitter();
+    }
+    if (liriCommand === "spotify-this-song") {
+        doSpotify(searchTerm);
+    }
+    if (liriCommand === "do-what-it-says") {
+        doWhat();
+    }
+}
+
+whichToDo(liriCommand);
 // BONUS
 // In addition to logging the data to your terminal/bash window, output the data to a .txt file called log.txt.
 // Make sure you append each command you run to the log.txt file.
