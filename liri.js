@@ -24,9 +24,16 @@ function doTwitter() {
 
     client.get('statuses/user_timeline', params, function (error, data) {
         if (error) throw error;
+        fs.appendFile("log.txt", "----- my-tweets ----\n", function (myError) {
+            if (myError) throw myError;
+        });
 
         for (i = 0; i < data.length; i++) {
             console.log(data[i].text);
+            // write results to log.txt file
+            fs.appendFile("log.txt", data[i].text + "\n", function (myError) {
+                if (myError) throw myError;
+            });
         }
     });
 }
@@ -75,6 +82,22 @@ function doSpotify(searchTerm) {
                     console.log("Song:", songInfo.name);
                     console.log("Preview link:", songInfo.preview_url);
                     console.log("Album:", songInfo.album.name);
+                
+                    fs.appendFile("log.txt", "----- spotify-this-song ----\n", function (myError) {
+                        if (myError) throw myError;
+                    });
+                    fs.appendFile("log.txt", "Artist: "+songInfo.album.artists[0].name+"\n", function (myError) {
+                        if (myError) throw myError;
+                    });
+                    fs.appendFile("log.txt", "Song: "+songInfo.name+"\n", function (myError) {
+                        if (myError) throw myError;
+                    });
+                    fs.appendFile("log.txt", "Preview link: "+songInfo.preview_url+"\n", function (myError) {
+                        if (myError) throw myError;
+                    });
+                    fs.appendFile("log.txt", "Album: "+songInfo.album.name+"\n", function (myError) {
+                        if (myError) throw myError;
+                    });
                 }, function (err) {
                     console.log('Something went wrong!', err);
                 });
@@ -119,6 +142,35 @@ function doMovie() {
             console.log("Language:", JSON.parse(body).Language);
             console.log("Plot:", JSON.parse(body).Plot);
             console.log("Actors:", JSON.parse(body).Actors);
+        
+            fs.appendFile("log.txt", "----- movie-this ----\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Title: "+JSON.parse(body).Title+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Released: "+JSON.parse(body).Year+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "IMDB Rating: "+JSON.parse(body).imdbRating+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Rotten Tomatoes Rating: "+JSON.parse(body).Ratings[1].Value+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Country produced: "+JSON.parse(body).Country+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Language: "+JSON.parse(body).Language+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Plot: "+JSON.parse(body).Plot+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+            fs.appendFile("log.txt", "Actors: "+JSON.parse(body).Actors+"\n", function (myError) {
+                if (myError) throw myError;
+            });
+        
         }
 
     });
