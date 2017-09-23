@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/jdiehl99/liri-node-app#readme",
   "dependencies": {
-    "axios": "^0.16.2",
     "request": "^2.82.0",
     "spotify-web-api-node": "^2.5.0",
     "twitter": "^1.7.1"
